@@ -32,7 +32,9 @@ print1:
 
 	mov word[ss:0x00], handle_zero
 	mov word[ss:0x02], 0x7c0
-
+	
+	mov ax,0x00
+	div ax
 
 	mov word[ss:0x04], handle_one
 	mov word[ss:0x06], 0x7c0
