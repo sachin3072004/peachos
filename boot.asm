@@ -1,29 +1,43 @@
-ORG 0x7c00
+ORG 0
 BITS 16
 
 _start:
-	jmp short print1
+
+	cli
+	mov ax, 0x7c0
+	mov ds, ax
+	mov es, ax
+	mov ax, 0x00
+	mov ss, ax
+	mov sp, 0x7c00
+	sti
+	jmp  print1
+
 handle_zero:
 	mov ah, 0eh
 	mov al,'A'
 	int 0x10
 	iret
 
-	;cli
-	;mov ax, 0x7c0
-	;mov ds, ax
-	;mov es, ax
-	;mov ax, 0x00
-	;mov ss, ax
-	;mov sp, 0x7c00
-	;sti
+handle_one:
+	mov ah, 0eh
+	mov al,'B'
+	int 0x10
+	iret
+
 print1:
 	mov ah, 0eh
 	mov al,'Z'
 	int 0x10
+
 	mov word[ss:0x00], handle_zero
 	mov word[ss:0x02], 0x7c0
-	int 0
+
+
+	mov word[ss:0x04], handle_one
+	mov word[ss:0x06], 0x7c0
+	int 1
+
 	mov si, message
 	call print
 	jmp $
